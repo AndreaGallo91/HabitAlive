@@ -8,7 +8,7 @@ const STATS = [
 
 export default function PetStats({ pet, compact = false }) {
   return (
-    <div className={`space-y-${compact ? '1.5' : '2'}`}>
+    <div className={compact ? 'space-y-1' : 'space-y-2'}>
       {STATS.map((stat) => {
         const value = pet[stat.key] || 0;
         const max = stat.key === 'power' ? Math.max(100, value) : 100;
@@ -19,7 +19,7 @@ export default function PetStats({ pet, compact = false }) {
             <span className={compact ? 'text-xs' : 'text-sm'}>{stat.emoji}</span>
             <div className="flex-1">
               <div
-                className={`${compact ? 'h-1.5' : 'h-2.5'} rounded-full overflow-hidden`}
+                className={compact ? 'h-1.5 rounded-full overflow-hidden' : 'h-2.5 rounded-full overflow-hidden'}
                 style={{ background: 'var(--color-bg)' }}
               >
                 <div
@@ -33,7 +33,7 @@ export default function PetStats({ pet, compact = false }) {
               </div>
             </div>
             <span
-              className={`font-mono font-bold ${compact ? 'text-[10px] w-6' : 'text-xs w-8'} text-right`}
+              className={compact ? 'font-mono font-bold text-[10px] w-6 text-right' : 'font-mono font-bold text-xs w-8 text-right'}
               style={{ color: stat.color }}
             >
               {Math.round(value)}
