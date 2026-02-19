@@ -4,7 +4,7 @@ import { useHabitContext } from '../../context/HabitContext';
 import { useDungeonContext } from '../../context/DungeonContext';
 import { calculateBattleResult } from '../../utils/battleEngine';
 import { XP_REWARDS } from '../../utils/xpCalculator';
-import { ACHIEVEMENTS } from '../../data/achievements';
+import { tryUnlockAchievement } from '../../utils/achievementChecker';
 import PetSVG from '../pet/PetSVG';
 import EnemySVG from './EnemySVG';
 
@@ -22,6 +22,8 @@ export default function BattleScreen({ dungeon, dungeonIndex, enemy, floor, isBo
   const [attackingEntity, setAttackingEntity] = useState(null);
   const [result, setResult] = useState(null);
   const battleResultRef = useRef(null);
+
+  const achCtx = { profile, unlockAchievement, queueAchievement, addXP };
 
   useEffect(() => {
     const petStats = {
@@ -61,14 +63,8 @@ export default function BattleScreen({ dungeon, dungeonIndex, enemy, floor, isBo
 
         if (isBoss) {
           const totalBosses = (dungeonState.totalBossesDefeated || 0) + 1;
-          if (totalBosses === 1 && !profile.achievements.includes('esploratore')) {
-            const ach = ACHIEVEMENTS.find(a => a.id === 'esploratore');
-            if (ach) { unlockAchievement('esploratore'); queueAchievement(ach); addXP(100, 'achievement'); }
-          }
-          if (totalBosses >= 10 && !profile.achievements.includes('sterminatore')) {
-            const ach = ACHIEVEMENTS.find(a => a.id === 'sterminatore');
-            if (ach) { unlockAchievement('sterminatore'); queueAchievement(ach); addXP(100, 'achievement'); }
-          }
+          if (totalBosses === 1) tryUnlockAchievement('esploratore', achCtx);
+          if (totalBosses >= 10) tryUnlockAchievement('sterminatore', achCtx);
         }
       } else {
         recordLoss();
@@ -77,16 +73,13 @@ export default function BattleScreen({ dungeon, dungeonIndex, enemy, floor, isBo
     }
 
     const turn = turns[currentTurn];
-    const delay = 600;
-
     const timer = setTimeout(() => {
       setAttackingEntity(turn.attacker);
       setPetHP(turn.petHP);
       setEnemyHP(turn.enemyHP);
-
       setTimeout(() => setAttackingEntity(null), 300);
       setCurrentTurn((prev) => prev + 1);
-    }, delay);
+    }, 600);
 
     return () => clearTimeout(timer);
   }, [battleState, currentTurn]);
@@ -95,9 +88,8 @@ export default function BattleScreen({ dungeon, dungeonIndex, enemy, floor, isBo
   const enemyHPPct = enemyMaxHP > 0 ? Math.max(0, (enemyHP / enemyMaxHP) * 100) : 0;
 
   return (
-    <div className="fixed inset-0 z-[80] flex flex-col items-center justify-center" style={{ background: 'var(--color-bg)' }}>
+    <div className="fixed inset-0 z-[80] flex flex-col items-center justify-center bg-[var(--color-bg)]">
       <div className="w-full max-w-lg px-4">
-        {/* Header */}
         <div className="text-center mb-6">
           <h2 className="font-display font-bold text-lg">
             {isBoss ? '⚔️ BOSS BATTLE' : `Piano ${floor}`}
@@ -107,37 +99,45 @@ export default function BattleScreen({ dungeon, dungeonIndex, enemy, floor, isBo
           </p>
         </div>
 
-        {/* Battle area */}
         <div className="flex items-center justify-between mb-8">
-          {/* Pet side */}
           <div className={`text-center transition-transform duration-200 ${attackingEntity === 'pet' ? 'translate-x-4 scale-110' : ''}`}>
             <PetSVG type={pet.type} stage={pet.stage} skin={pet.activeSkin} energy={pet.energy} mood={pet.mood} size={100} animate={false} />
             <div className="mt-2 w-24 mx-auto">
-              <div className="h-2 rounded-full overflow-hidden" style={{ background: 'var(--color-surface)' }}>
-                <div className="h-full rounded-full transition-all duration-300" style={{ width: `${petHPPct}%`, background: petHPPct > 50 ? '#22C55E' : petHPPct > 25 ? '#F59E0B' : '#EF4444' }} />
+              <div className="stat-bar h-2">
+                <div
+                  className="stat-bar-fill"
+                  style={{
+                    width: `${petHPPct}%`,
+                    background: petHPPct > 50 ? '#22C55E' : petHPPct > 25 ? '#F59E0B' : '#EF4444',
+                  }}
+                />
               </div>
-              <div className="text-[10px] font-mono text-[var(--color-text-muted)] mt-0.5">{Math.round(petHP)}/{petMaxHP} HP</div>
+              <div className="text-[10px] font-mono text-[var(--color-text-muted)] mt-0.5">
+                {Math.round(petHP)}/{petMaxHP} HP
+              </div>
             </div>
           </div>
 
-          {/* VS */}
           <div className="font-display font-bold text-2xl text-[var(--color-text-muted)]">
             {battleState === 'starting' ? '...' : battleState === 'result' ? '' : '⚡'}
           </div>
 
-          {/* Enemy side */}
           <div className={`text-center transition-transform duration-200 ${attackingEntity === 'enemy' ? '-translate-x-4 scale-110' : ''}`}>
             <EnemySVG enemy={enemy} dungeonIndex={dungeonIndex} size={100} />
             <div className="mt-2 w-24 mx-auto">
-              <div className="h-2 rounded-full overflow-hidden" style={{ background: 'var(--color-surface)' }}>
-                <div className="h-full rounded-full transition-all duration-300" style={{ width: `${enemyHPPct}%`, background: '#EF4444' }} />
+              <div className="stat-bar h-2">
+                <div
+                  className="stat-bar-fill"
+                  style={{ width: `${enemyHPPct}%`, background: '#EF4444' }}
+                />
               </div>
-              <div className="text-[10px] font-mono text-[var(--color-text-muted)] mt-0.5">{Math.round(enemyHP)}/{enemyMaxHP} HP</div>
+              <div className="text-[10px] font-mono text-[var(--color-text-muted)] mt-0.5">
+                {Math.round(enemyHP)}/{enemyMaxHP} HP
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Result */}
         {result && (
           <div className="text-center animate-bounce-in">
             {result === 'victory' ? (
@@ -167,17 +167,12 @@ export default function BattleScreen({ dungeon, dungeonIndex, enemy, floor, isBo
                 </p>
               </div>
             )}
-            <button
-              onClick={onComplete}
-              className="mt-6 px-8 py-3 rounded-xl font-bold text-sm transition-all"
-              style={{ background: 'var(--color-primary)', color: 'var(--color-bg)' }}
-            >
+            <button onClick={onComplete} className="btn-primary mt-6 px-8">
               Continua
             </button>
           </div>
         )}
 
-        {/* Loading */}
         {battleState === 'starting' && (
           <div className="text-center text-[var(--color-text-muted)] animate-pulse">
             Preparazione alla battaglia...

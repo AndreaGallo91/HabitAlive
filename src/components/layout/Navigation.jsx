@@ -10,8 +10,8 @@ const TABS = [
 
 export default function Navigation({ activeTab, setActiveTab }) {
   return (
-    <nav className="sticky bottom-0 z-50 glass border-t border-[var(--color-border)]">
-      <div className="max-w-lg mx-auto flex justify-around py-2">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 glass-strong border-t border-[var(--color-border)] safe-bottom">
+      <div className="max-w-lg mx-auto flex justify-around py-1.5 md:max-w-2xl lg:max-w-3xl">
         {TABS.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -19,18 +19,18 @@ export default function Navigation({ activeTab, setActiveTab }) {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-all duration-200 ${
+              className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-all duration-200 min-w-[48px] min-h-[44px] touch-bounce ${
                 isActive
-                  ? 'text-[var(--color-primary)] scale-105'
+                  ? 'text-[var(--color-primary)]'
                   : 'text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)]'
               }`}
             >
               <Icon size={20} strokeWidth={isActive ? 2.5 : 1.5} />
-              <span className={`text-[10px] font-medium ${isActive ? 'font-bold' : ''}`}>
+              <span className={`text-[10px] leading-tight ${isActive ? 'font-bold' : 'font-medium'}`}>
                 {tab.label}
               </span>
               {isActive && (
-                <div className="w-1 h-1 rounded-full bg-[var(--color-primary)] mt-0.5" />
+                <div className="w-1 h-1 rounded-full bg-[var(--color-primary)]" />
               )}
             </button>
           );

@@ -3,12 +3,12 @@ import { Lock } from 'lucide-react';
 export default function AchievementCard({ achievement, isUnlocked }) {
   return (
     <div
-      className="p-3 rounded-xl border text-center transition-all"
+      className="card p-3 text-center transition-all"
       style={{
         background: isUnlocked
           ? 'linear-gradient(135deg, var(--color-surface), var(--color-surface-light))'
           : 'var(--color-bg)',
-        borderColor: isUnlocked ? 'var(--color-warning)' : 'var(--color-border)',
+        borderColor: isUnlocked ? 'var(--color-warning)' : undefined,
         opacity: isUnlocked ? 1 : 0.5,
         boxShadow: isUnlocked ? '0 0 15px rgba(245, 158, 11, 0.15)' : 'none',
       }}

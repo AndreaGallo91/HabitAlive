@@ -8,7 +8,7 @@ export default function DayNavigator({ selectedDate, setSelectedDate }) {
     <div className="flex items-center justify-between px-1 py-2">
       <button
         onClick={() => setSelectedDate(addDays(selectedDate, -1))}
-        className="p-2 rounded-lg hover:bg-[var(--color-surface-light)] transition-colors text-[var(--color-text-secondary)]"
+        className="p-2 rounded-lg hover:bg-[var(--color-surface-light)] transition-colors text-[var(--color-text-secondary)] min-w-[44px] min-h-[44px] flex items-center justify-center touch-bounce"
       >
         <ChevronLeft size={20} />
       </button>
@@ -21,7 +21,7 @@ export default function DayNavigator({ selectedDate, setSelectedDate }) {
         {!today && (
           <button
             onClick={() => setSelectedDate(getToday())}
-            className="text-xs px-2 py-0.5 rounded-full bg-[var(--color-primary)] text-[var(--color-bg)] font-bold"
+            className="text-xs px-2.5 py-1 rounded-full bg-[var(--color-primary)] text-[var(--color-bg)] font-bold min-h-[28px] touch-bounce"
           >
             Oggi
           </button>
@@ -30,9 +30,8 @@ export default function DayNavigator({ selectedDate, setSelectedDate }) {
 
       <button
         onClick={() => setSelectedDate(addDays(selectedDate, 1))}
-        className="p-2 rounded-lg hover:bg-[var(--color-surface-light)] transition-colors text-[var(--color-text-secondary)]"
         disabled={today}
-        style={{ opacity: today ? 0.3 : 1 }}
+        className="p-2 rounded-lg hover:bg-[var(--color-surface-light)] transition-colors text-[var(--color-text-secondary)] min-w-[44px] min-h-[44px] flex items-center justify-center touch-bounce disabled:opacity-30"
       >
         <ChevronRight size={20} />
       </button>

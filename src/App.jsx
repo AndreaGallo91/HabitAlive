@@ -3,6 +3,7 @@ import { HabitProvider, useHabitContext } from './context/HabitContext';
 import { PetProvider } from './context/PetContext';
 import { DungeonProvider } from './context/DungeonContext';
 import { ThemeProvider } from './context/ThemeContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import Header from './components/layout/Header';
 import Navigation from './components/layout/Navigation';
 import HabitList from './components/habits/HabitList';
@@ -46,9 +47,9 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'var(--color-bg)' }}>
+    <div className="min-h-[100dvh] flex flex-col bg-[var(--color-bg)]">
       <Header />
-      <main className="flex-1 max-w-lg mx-auto w-full px-4 py-4 pb-20">
+      <main className="flex-1 w-full max-w-lg mx-auto px-4 pt-4 pb-24 safe-bottom md:max-w-2xl lg:max-w-3xl">
         {renderTab()}
       </main>
       <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -64,14 +65,16 @@ function AppContent() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <HabitProvider>
-        <PetProvider>
-          <DungeonProvider>
-            <AppContent />
-          </DungeonProvider>
-        </PetProvider>
-      </HabitProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <HabitProvider>
+          <PetProvider>
+            <DungeonProvider>
+              <AppContent />
+            </DungeonProvider>
+          </PetProvider>
+        </HabitProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }

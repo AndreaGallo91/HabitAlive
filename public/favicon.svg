@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F1419"/>
+      <stop offset="100%" stop-color="#1A1F2E"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00D4FF"/>
+      <stop offset="50%" stop-color="#A855F7"/>
+      <stop offset="100%" stop-color="#22C55E"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <g transform="translate(256,270)">
+    <path d="M0,-120 C60,-120 80,-60 80,0 C80,70 40,120 0,140 C-40,120 -80,70 -80,0 C-80,-60 -60,-120 0,-120Z" fill="url(#flame)" opacity="0.9"/>
+    <circle cx="-25" cy="-10" r="14" fill="white" opacity="0.9"/>
+    <circle cx="25" cy="-10" r="14" fill="white" opacity="0.9"/>
+    <circle cx="-25" cy="-8" r="8" fill="#0F1419"/>
+    <circle cx="25" cy="-8" r="8" fill="#0F1419"/>
+    <circle cx="-22" cy="-12" r="4" fill="white" opacity="0.8"/>
+    <circle cx="28" cy="-12" r="4" fill="white" opacity="0.8"/>
+    <path d="M-15,20 Q0,35 15,20" fill="none" stroke="#0F1419" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>

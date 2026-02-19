@@ -5,7 +5,7 @@ export default function DailyProgress({ selectedDate }) {
   const { getCompletionsForDate, getActiveHabits } = useHabitContext();
   const completions = getCompletionsForDate(selectedDate);
   const activeHabits = getActiveHabits();
-  
+
   const total = activeHabits.length;
   const completed = activeHabits.filter((h) => completions[h.id]?.completed).length;
   const percentage = total > 0 ? (completed / total) * 100 : 0;
@@ -13,12 +13,12 @@ export default function DailyProgress({ selectedDate }) {
 
   return (
     <div
-      className="p-3 rounded-xl border transition-all duration-300"
+      className="card transition-all duration-300"
       style={{
         background: allDone
           ? 'linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05))'
           : 'var(--color-surface)',
-        borderColor: allDone ? 'var(--color-accent)' : 'var(--color-border)',
+        borderColor: allDone ? 'var(--color-accent)' : undefined,
         boxShadow: allDone ? '0 0 20px rgba(34, 197, 94, 0.2)' : 'none',
       }}
     >
@@ -32,9 +32,9 @@ export default function DailyProgress({ selectedDate }) {
         </span>
       </div>
 
-      <div className="h-2.5 bg-[var(--color-bg)] rounded-full overflow-hidden">
+      <div className="stat-bar h-2.5">
         <div
-          className="h-full rounded-full transition-all duration-500 ease-out"
+          className="stat-bar-fill"
           style={{
             width: `${percentage}%`,
             background: allDone

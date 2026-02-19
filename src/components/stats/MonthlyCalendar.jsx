@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useHabitContext } from '../../context/HabitContext';
-import { getMonthDates, getToday, formatDate } from '../../utils/dateHelpers';
+import { getMonthDates, getToday } from '../../utils/dateHelpers';
 
 const MONTH_NAMES = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
 const DAY_HEADERS = ['L', 'M', 'M', 'G', 'V', 'S', 'D'];
@@ -10,7 +10,7 @@ export default function MonthlyCalendar() {
   const { logs, getActiveHabits, getCompletionsForDate } = useHabitContext();
   const activeHabits = getActiveHabits();
   const today = getToday();
-  
+
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth());
 
@@ -27,13 +27,19 @@ export default function MonthlyCalendar() {
   };
 
   return (
-    <div className="p-4 rounded-xl border" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+    <div className="card">
       <div className="flex items-center justify-between mb-3">
-        <button onClick={() => navigateMonth(-1)} className="p-1 rounded hover:bg-[var(--color-surface-light)] text-[var(--color-text-muted)]">
+        <button
+          onClick={() => navigateMonth(-1)}
+          className="p-1.5 rounded-lg hover:bg-[var(--color-surface-light)] text-[var(--color-text-muted)] min-w-[36px] min-h-[36px] flex items-center justify-center touch-bounce"
+        >
           <ChevronLeft size={16} />
         </button>
         <span className="font-display font-bold text-sm">{MONTH_NAMES[month]} {year}</span>
-        <button onClick={() => navigateMonth(1)} className="p-1 rounded hover:bg-[var(--color-surface-light)] text-[var(--color-text-muted)]">
+        <button
+          onClick={() => navigateMonth(1)}
+          className="p-1.5 rounded-lg hover:bg-[var(--color-surface-light)] text-[var(--color-text-muted)] min-w-[36px] min-h-[36px] flex items-center justify-center touch-bounce"
+        >
           <ChevronRight size={16} />
         </button>
       </div>

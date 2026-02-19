@@ -25,7 +25,7 @@ export default function ProgressChart() {
   }, [logs, activeHabits, today, getCompletionsForDate]);
 
   return (
-    <div className="p-4 rounded-xl border" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+    <div className="card">
       <h3 className="font-display font-bold text-sm mb-3">Progressi (14 giorni)</h3>
       {activeHabits.length === 0 ? (
         <div className="text-center py-6 text-xs text-[var(--color-text-muted)]">
@@ -37,35 +37,35 @@ export default function ProgressChart() {
             <AreaChart data={data}>
               <defs>
                 <linearGradient id="colorComp" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#00D4FF" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#00D4FF" stopOpacity={0} />
+                  <stop offset="5%" stopColor="var(--color-primary)" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="var(--color-primary)" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <XAxis
                 dataKey="name"
-                tick={{ fill: '#64748B', fontSize: 10 }}
-                axisLine={{ stroke: '#2D3548' }}
+                tick={{ fill: 'var(--color-text-muted)', fontSize: 10 }}
+                axisLine={{ stroke: 'var(--color-border)' }}
                 tickLine={false}
               />
               <YAxis
-                tick={{ fill: '#64748B', fontSize: 10 }}
+                tick={{ fill: 'var(--color-text-muted)', fontSize: 10 }}
                 axisLine={false}
                 tickLine={false}
                 width={20}
               />
               <Tooltip
                 contentStyle={{
-                  background: '#1A1F2E',
-                  border: '1px solid #2D3548',
+                  background: 'var(--color-surface)',
+                  border: '1px solid var(--color-border)',
                   borderRadius: '8px',
-                  color: '#F8FAFC',
+                  color: 'var(--color-text)',
                   fontSize: '12px',
                 }}
               />
               <Area
                 type="monotone"
                 dataKey="completate"
-                stroke="#00D4FF"
+                stroke="var(--color-primary)"
                 strokeWidth={2}
                 fillOpacity={1}
                 fill="url(#colorComp)"

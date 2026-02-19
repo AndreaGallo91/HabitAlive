@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Lock, CheckCircle, ChevronRight, Zap } from 'lucide-react';
+import { ChevronRight, Zap } from 'lucide-react';
 import { usePetContext } from '../../context/PetContext';
 import { useDungeonContext } from '../../context/DungeonContext';
 import { DUNGEONS } from '../../data/dungeons';
+import { ENERGY_THRESHOLD } from '../../utils/achievementChecker';
 import DungeonDetail from './DungeonDetail';
 
 export default function DungeonList() {
@@ -31,9 +32,9 @@ export default function DungeonList() {
         </div>
       </div>
 
-      {pet.energy < 30 && (
-        <div className="p-3 rounded-xl border text-center text-sm" style={{ background: 'rgba(239, 68, 68, 0.1)', borderColor: 'var(--color-danger)' }}>
-          <span className="text-[var(--color-danger)]">⚡ Energia insufficiente ({Math.round(pet.energy)}/30)</span>
+      {pet.energy < ENERGY_THRESHOLD && (
+        <div className="card text-center text-sm" style={{ background: 'rgba(239, 68, 68, 0.1)', borderColor: 'var(--color-danger)' }}>
+          <span className="text-[var(--color-danger)]">⚡ Energia insufficiente ({Math.round(pet.energy)}/{ENERGY_THRESHOLD})</span>
           <p className="text-xs text-[var(--color-text-muted)] mt-1">Completa abitudini per ricaricare!</p>
         </div>
       )}
@@ -43,16 +44,15 @@ export default function DungeonList() {
           const status = getDungeonStatus(dungeon.id);
           const isUnlocked = status?.unlocked;
           const isCompleted = status?.completed;
-          const canEnter = isUnlocked && pet.power >= dungeon.minPower && pet.energy >= 30;
+          const canEnter = isUnlocked && pet.power >= dungeon.minPower && pet.energy >= ENERGY_THRESHOLD;
           const currentFloor = status?.currentFloor || 1;
-          const floorsCompleted = status ? Object.values(status.floors).filter(f => f.completed).length : 0;
 
           return (
             <button
               key={dungeon.id}
               onClick={() => canEnter && setSelectedDungeon({ dungeon, index })}
               disabled={!canEnter}
-              className="w-full flex items-center gap-3 p-4 rounded-xl border transition-all text-left"
+              className="w-full card flex items-center gap-3 p-4 text-left touch-bounce"
               style={{
                 background: isCompleted
                   ? 'linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05))'
@@ -62,12 +62,12 @@ export default function DungeonList() {
                 borderColor: isCompleted
                   ? 'var(--color-accent)'
                   : isUnlocked
-                  ? 'var(--color-border)'
+                  ? undefined
                   : 'var(--color-bg)',
                 opacity: isUnlocked ? 1 : 0.5,
               }}
             >
-              <div className="text-2xl w-10 text-center">
+              <div className="text-2xl w-10 text-center shrink-0">
                 {isCompleted ? '✅' : !isUnlocked ? '🔒' : dungeon.icon}
               </div>
               <div className="flex-1 min-w-0">
@@ -102,14 +102,14 @@ export default function DungeonList() {
                 )}
               </div>
               {canEnter && !isCompleted && (
-                <ChevronRight size={18} className="text-[var(--color-text-muted)]" />
+                <ChevronRight size={18} className="text-[var(--color-text-muted)] shrink-0" />
               )}
             </button>
           );
         })}
       </div>
 
-      <div className="p-3 rounded-xl text-center text-xs text-[var(--color-text-muted)]" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+      <div className="card text-center text-xs text-[var(--color-text-muted)]">
         Boss sconfitti: <span className="font-bold font-mono text-[var(--color-primary)]">{dungeonState.totalBossesDefeated}</span>
       </div>
     </div>

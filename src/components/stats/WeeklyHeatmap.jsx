@@ -1,5 +1,5 @@
 import { useHabitContext } from '../../context/HabitContext';
-import { getToday, addDays, formatDisplayDate } from '../../utils/dateHelpers';
+import { getToday, addDays } from '../../utils/dateHelpers';
 
 const DAY_LABELS = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
 
@@ -19,10 +19,10 @@ export default function WeeklyHeatmap() {
   }
 
   return (
-    <div className="p-4 rounded-xl border" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}>
+    <div className="card">
       <h3 className="font-display font-bold text-sm mb-3">Ultimi 7 Giorni</h3>
       <div className="grid grid-cols-7 gap-1.5">
-        {days.map((day, i) => (
+        {days.map((day) => (
           <div key={day.date} className="text-center">
             <div className="text-[10px] text-[var(--color-text-muted)] mb-1">
               {DAY_LABELS[(new Date(day.date).getDay() + 6) % 7]}

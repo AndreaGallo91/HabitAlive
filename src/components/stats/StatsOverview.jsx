@@ -21,15 +21,11 @@ export default function StatsOverview() {
     <div className="space-y-4">
       <h2 className="font-display font-bold text-lg px-1">Statistiche</h2>
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
         {stats.map((stat) => {
           const Icon = stat.icon;
           return (
-            <div
-              key={stat.label}
-              className="p-3 rounded-xl border"
-              style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border)' }}
-            >
+            <div key={stat.label} className="card">
               <div className="flex items-center gap-1.5 mb-1">
                 <Icon size={14} style={{ color: stat.color }} />
                 <span className="text-[10px] text-[var(--color-text-muted)]">{stat.label}</span>
